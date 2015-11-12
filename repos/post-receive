@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# post-receive
+
+# 1. Read STDIN (Format: "from_commit to_commit branch_name")
+from, to, branch = ARGF.read.split " "
+
+
+
+if (branch =~ /branchName$/ ) == nil
+    puts "Received branch #{branch}, not deploying."
+else
+    # 3. Copy files to deploy directory
+    deploy_to_dir = File.expand_path('/path/to/public_folder')
+    `GIT_WORK_TREE="#{deploy_to_dir}" git checkout -f branchName`
+    puts "DEPLOY: live(#{to}) copied to '#{deploy_to_dir}'"
+    # 4.TODO: Deployment Tasks
+    # i.e.: Run Puppet Apply, Restart Daemons, etc
+end
